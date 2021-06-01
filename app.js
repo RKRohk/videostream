@@ -1,10 +1,12 @@
 import express from 'express'
 import fs from 'fs'
 import path from "path"
+import cors from "cors"
+
 const app = express()
+app.use(cors())
 const __dirname = path.resolve()
 app.use(express.static(path.join(__dirname,"/public")))
-
 app.get("/video", function (req, res) {
   // Ensure there is a range given for the video
   const range = req.headers.range;
@@ -13,8 +15,8 @@ app.get("/video", function (req, res) {
   }
 
   // get video stats (about 61MB)
-  const videoPath = "bigbuck.mp4";
-  const videoSize = fs.statSync("bigbuck.mp4").size;
+  const videoPath = "bigbuck.mkv";
+  const videoSize = fs.statSync("bigbuck.mkv").size;
 
   // Parse Range
   // Example: "bytes=32324-"
@@ -40,7 +42,5 @@ app.get("/video", function (req, res) {
   // Stream the video chunk to the client
   videoStream.pipe(res);
 });
-const PORT = 3000
-app.listen(PORT,() => {
-    console.log(`Server started on PORT:${PORT}`)
-})
+
+export default app;
