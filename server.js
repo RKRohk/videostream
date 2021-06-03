@@ -13,6 +13,9 @@ io.on("connection",(socket) => {
     const room = socket.handshake.query.room
     console.log(socket.handshake.query)
     socket.join(room)
+    const name = socket.handshake.query.name
+    socket.to(room).emit("message",{by:name,message:`${name} has joined the room`,type:0})
+
 
     socket.on("play",(arg) => {
         socket.to(room).emit("play",{...arg})
@@ -31,5 +34,9 @@ io.on("connection",(socket) => {
     socket.on("message",(arg) => {
         console.log(arg)
         socket.to(room).emit("message",{...arg})
+    })
+
+    socket.on("disconnected",(arg) => {
+        socket.to(room).emit("message",{by:name,message:`${name} has left the room`,type:0})
     })
 })
