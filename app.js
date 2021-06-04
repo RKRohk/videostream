@@ -74,4 +74,17 @@ app.get("/room/:name", function (req, res) {
   videoStream.pipe(res);
 });
 
+app.get("/subs/:name",(req,res) => {
+  const {name} = req.params
+
+  console.log(db)
+
+  const room = db.find((room) => room.name === name )
+
+  const subsPath = `videos/${room.video}.vtt`;
+
+  res.sendFile(subsPath)
+})
+
+
 export default app;

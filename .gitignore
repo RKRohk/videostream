@@ -3,3 +3,5 @@ bigbuck.mp4
 *.mkv
 *.mp4
 videos
+playbook.*
+.vscode
